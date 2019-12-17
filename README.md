@@ -29,8 +29,23 @@ This assignment will see you creating an online meme creation tool, using the sp
  ENDPOINT - http://www.splashbase.co/api/v1/images/search?query=laptop 
     Here we can put the search term in query to get the data.
     Example request and response - 
+      ![picture alt](https://github.com/gauravkk22/memex/blob/master/api-example.png "API Example")
+      
 
 # EXPECTED RESULT
- 
+   ![picture alt](https://github.com/gauravkk22/memex/blob/master/mockup_memex.png "API Example")
+   
 
 # FAQ
+* Can I use Angular/VueJS framework here?
+  * No, the application as mentioned  is needed to be in ReactJS.
+* Can I use insert library here?
+  * If it can be installed via npm you can use it!
+* Do I need to unit/functional test or lint my code?
+  * It is not required, but linting and tests are always great! Primary focus should be the web tool.
+* Do I need to add continuous integration?
+  * You are welcome to set up travis, circleci, appveyor, etc... if you want to, but it is not required
+* Do I need to fully document my code?
+  * Document the code as if you were submitting it for a code review
+* Can I go beyond the guidelines and implement more?
+  * Of course! just make sure you have the basic pieces completed, but we're happy to see how you can get creative with this!
