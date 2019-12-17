@@ -1,2 +1,2 @@
 # memex
-An app application for creating meme using splashbase api
+An application for creating meme using splashbase api
