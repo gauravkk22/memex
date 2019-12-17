@@ -20,10 +20,11 @@
  4. Loading the splashbase api results should be asynchronous and display a loading or searching visual.
  5. Editing the caption text should appear on the image as it is typed.
  6. Error should be handled gracefully.
- 7. Try to optimise the build.
- 8. Documentation including the details of app and its components.
- 8. Host it using any free hosting service.(**optional**)
- 9. The app should be PWA (**optional**)
+ 7. Write Unit Test for the components and functionalities using **Jest** and **Enzyme**.
+ 8. Try to optimise the build.
+ 9. Documentation including the details of app and its components.
+ 10. Host it using any free hosting service.(**optional**)
+ 11. The app should be PWA (**optional**)
 
 # API USAGE
  __ENDPOINT__ - http://www.splashbase.co/api/v1/images/search?query=laptop 
