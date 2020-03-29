@@ -1,65 +1,18 @@
+/* Meme Header and Footer */
 .meme-header{
   top: 0;
 }
 .meme-footer{
   bottom:0;
 }
-
 .meme-header, .meme-footer {
   background: #333;
   padding: 10px 15px;
   color: #fff;
 }
+
 .app-container{
   width: 100%;
-}
-.meme-text{
-  padding: 12px 9px;
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  color: red;
-  width: 96px;
-  height: 72px;
-  font-weight: 700;
-  font-size: 14px;
-}
-.img-view{
-  display: flex;
-  width: 500px;
-  height:300px;
-  .main-img{
-    width: 500px;
-    height:300px;
-  }
-  .meme-text{
-    padding: 50px 30px;
-    width: 440px;
-    height:200px;
-    font-size:30px;
-  } 
-}
-.top-text{
-  align-items: flex-start;
-}
-.center-text{
-  align-items: center;
-}
-.bottom-text{
-  align-items: flex-end;
-}
-
-.saved-memes-card{
-  display: flex;
-}
-.saved-meme{
-  width: 150px;
-  height: 90px;
-}
-
-//home page
-.main-container{
-  padding: 30px;
 }
 
 .App-logo {

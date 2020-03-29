@@ -1,118 +1,172 @@
 import React, { useState, useEffect } from 'react'
-import {BASE_SEARCH_URL_WITH_QUERY, NO_DATA_AVAILABLE} from '../../constants/constants'
+import { connect } from 'react-redux'
+
+import {BASE_SEARCH_URL_WITH_QUERY, NO_DATA_AVAILABLE, ERROR_MESSAGE} from '../../constants/constants'
 import MemeImage from "./../../components/memeImage"
+import { fetchMemeImgList, saveMemeDetails } from './actionCreator'
+import './home.scss'
 
 function Home(props){
+    console.log(props)
     const [search, setSearch] = useState("")
     const [memeText, setMemeText] = useState("")
     const [memeTextPosition, setMemeTextPosition] = useState("")
     const [memeMainImg, setMemeMainImg] = useState("")
-    const [savedMemes, setSavedMemes] = useState(localStorage.getItem('savedMemes') || '')
-    const [errorOccured, setErrorOccured] = useState({
-        isError: false,
-        errorStatus: 0,
-        errorMsg: ""
-    })
+    const [savedMemes, setSavedMemes] = useState([])
+    const {
+        memeImgReducer : { memeImgList, saveMemeImgsDetails, isLoading, isError}
+    } = props
     const [isMainImgLoading, setIsMainImgLoading]= useState(true);
-    // const memeStorage = window.localStorage;
 
     useEffect(() => {
-        localStorage.setItem('savedMemes',savedMemes);
-    }, [savedMemes])
+        setSavedMemes(saveMemeImgsDetails)
+    }, [saveMemeImgsDetails])
 
     function onHandleChange(e, callback){
         callback(e.target.value)
     }
 
-    const onHandleSearch = () => {
+    function onHandleSearch(e) {
         if(search !== ""){
-
-            fetch(BASE_SEARCH_URL_WITH_QUERY+search)
-            .then(res => res.json())
-            .then((data) => {
-                const memeImages = data.images
-                // const randomNumber = (Math.floor(Math.random() *(memeImages.length)))
-                if(memeImages.length > 0){
-                    setMemeMainImg(memeImages[0]);
-                }else if(memeImages === 0){
-                    setErrorOccured({
-                        isError: true,
-                        errorStatus: 200,
-                        errorMsg: NO_DATA_AVAILABLE + "with <h4>" + search +"</h4>"
+            setMemeMainImg("")
+            setIsMainImgLoading(true)
+            props.dispatch(fetchMemeImgList(BASE_SEARCH_URL_WITH_QUERY+search)).then(response =>{
+                const memeImgs = response.images
+                if(memeImgs.length > 0){
+                    setMemeMainImg(() => {
+                        return memeImgs[Math.floor(Math.random() * memeImgs.length)] 
                     })
+                }else{
+                    setMemeMainImg("NO_DATA")
                 }
+            }).catch(error =>{
+                setIsMainImgLoading(false)
+                console.log(error)
             })
-            .catch(console.log)
         }
     }
 
     const onHandleSave = () =>{
         if(memeMainImg !== "" && memeText !=="" && memeTextPosition!==""){
-            debugger;
-            if(savedMemes === ""){
-                setSavedMemes(JSON.stringify([{...memeMainImg, memeText, memeTextPosition}]))
-            }else{
-                setSavedMemes(JSON.stringify([...JSON.parse(savedMemes),{...memeMainImg, memeText, memeTextPosition}]))
-            }
-            console.log(savedMemes);
+            props.dispatch(saveMemeDetails([...saveMemeImgsDetails, {...memeMainImg, memeText, memeTextPosition}]))
         }
+    }
+
+    const onHandleReset = () => {
+        setSearch("")
+        setMemeMainImg("")
+        setMemeText("")
+        setMemeTextPosition("")
     }
 
     return (
         <main className="main-container">
-            <div>
-                <input name="search" type="text" value={search} onChange={e => onHandleChange(e, setSearch)} placeholder="Search image" />
-                <button onClick={onHandleSearch}>Search</button>
-            </div>
-            <section>
-                <div className="img-view">
-                    {
-                    memeMainImg &&
-
-                        <MemeImage classProp="main-img" 
-                            imgSrcProp={!isMainImgLoading ? memeMainImg.url:"./loading.gif"} 
-                            onLoadProp={() => setIsMainImgLoading(false)} 
-                            memeTextPositionProp={memeTextPosition}
-                            memeTextProp={memeText} />
-                    }
-                    {memeMainImg==="" &&
-                        <>
-                            <div>{NO_DATA_AVAILABLE}</div>
-                        </>
-                    }
+            <div className="flex-row">
+                <input className="flex-col-xs-9 flex-col-sm-9 flex-col-md-9 flex-col-lg-9 meme-input-text" name="search" type="text" 
+                value={search} onChange={e => onHandleChange(e, setSearch)} placeholder="Search image" />
+                <div className="display-flex flex-col-lg-3 flex-col-md-3 flex-col-sm-3 flex-col-xs-3 padding-top-0 padding-bottom-0">
+                    <button className="meme-btn" onClick={onHandleSearch}>Search</button>
                 </div>
-                <aside>
-                    <h3>Saved Memes</h3>
-                    {savedMemes.length > 0 &&
-                     JSON.parse(savedMemes).map((meme, index)=>{
-                        return <div className="saved-memes-card" key={meme.id+index}>
-                            <MemeImage classProp="saved-meme" 
-                            imgSrcProp={meme.url} 
-                            onLoadProp={() => {}} 
-                            memeTextPositionProp={meme.memeTextPosition}
-                            memeTextProp={meme.memeText} />
+            </div>
+            <section className="flex-row">
+                <div className="img-view flex-col-lg-9 flex-col-md-9 flex-col-sm-12 flex-col-xs-12 flex-row">
+                    <div className="flex-col-xs-12 flex-row--align-h-center flex-row--align-v-center meme-main flex-row">
+                        {
+                        memeMainImg && memeMainImg !== "NO_DATA" &&
+
+                            <MemeImage classProp="main-img" 
+                                imgSrcProp={!isMainImgLoading ? memeMainImg.url:"./loading.gif"} 
+                                onLoadProp={() => setIsMainImgLoading(false)} 
+                                memeTextPositionProp={memeTextPosition}
+                                memeTextProp={memeText}
+                                isImgLoading={isMainImgLoading} />
+                        }
+                        {memeMainImg==="" &&
+                            <>
+                                <div className="no-data">{NO_DATA_AVAILABLE}</div>
+                            </>
+                        }
+                        {memeMainImg === "NO_DATA" &&
+                        <>
+                            <div>{NO_DATA_AVAILABLE} for <h4 className="disp-inline">{search}</h4> available</div>
+                        </>
+
+                        }
+                        {isError &&
+                            <>
+                                <div className="no-data">{ERROR_MESSAGE}</div>
+                            </>
+                        }
+                    </div>
+
+                    <textarea className="flex-col-xs-12 meme-input-text meme-display-text" 
+                        name="memeText" 
+                        value={memeText} 
+                        onChange ={e => onHandleChange(e, setMemeText)} 
+                        placeholder="Please Enter Meme text here!" />
+                </div>
+                <aside className="flex-col-lg-3 flex-col-md-3 flex-col-sm-12 flex-col-xs-12 right-side">
+                    <div className="saved-memes-list flex-row">
+                        <h3 className="flex-col-xs-12 saved-memes-head">Saved Memes</h3>
+                        <div className="scroll-y flex-row ">
+                            {savedMemes.length > 0 &&
+                            savedMemes.map((meme, index)=>{
+                                return <div className="saved-memes-card flex-col-xs-6 flex-row--align-h-center flex-row--align-v-center" key={meme.id+index}>
+                                    <MemeImage classProp="saved-meme" 
+                                    imgSrcProp={meme.url} 
+                                    onLoadProp={() => {}} 
+                                    memeTextPositionProp={meme.memeTextPosition}
+                                    memeTextProp={meme.memeText} />
+                                </div>
+                            })
+                            }{savedMemes.length === 0 &&
+                                <div className="no-data">No Memes Saved.</div>
+                            }
                         </div>
-                     })
-                    }
+                    </div>
+
+                    <div>
+                        <div className="">Position :</div>
+                        <label>
+                            <input name="memeTextPosition" 
+                            checked={memeTextPosition === "top"} 
+                            type="radio" 
+                            onChange={e => onHandleChange(e, setMemeTextPosition)} 
+                            value="top" /> Top
+                        </label>
+                        <label>
+                            <input name="memeTextPosition" 
+                            checked={memeTextPosition === "center"} 
+                            type="radio" 
+                            onChange={e => onHandleChange(e, setMemeTextPosition)} 
+                            value="center" /> Center
+                        </label>
+                        <label>
+                            <input name="memeTextPosition" 
+                            checked={memeTextPosition === "bottom"} 
+                            type="radio" 
+                            onChange={e => onHandleChange(e, setMemeTextPosition)} 
+                            value="bottom" /> Bottom
+                        </label>
+                    </div>
+                    <div className="flex-row">
+                        <button className="flex-col-sm-5 flex-col-xs-12 meme-btn" onClick={onHandleSave} >Save</button>
+                        <button className="flex-col-sm-5 flex-col-xs-12 meme-btn meme-btn--default" onClick={onHandleReset} >Reset</button>
+                    </div>
                 </aside>
             </section>
-            <div>
-                <textarea name="memeText" value={memeText} onChange ={e => onHandleChange(e, setMemeText)} cols="40" rows="10" placeholder="Please Enter Meme text here!" />
-                <aside>
-                    <label>
-                        <input name="memeTextPosition" type="radio" onChange={e => onHandleChange(e, setMemeTextPosition)} value="top" /> Top
-                    </label>
-                    <label>
-                        <input name="memeTextPosition" type="radio" onChange={e => onHandleChange(e, setMemeTextPosition)} value="center" /> Center
-                    </label>
-                    <label>
-                        <input name="memeTextPosition" type="radio" onChange={e => onHandleChange(e, setMemeTextPosition)} value="bottom" /> Bottom
-                    </label>
-                </aside>
-                <button onClick={onHandleSave} >Save</button>
-            </div>
+            {isLoading && 
+                <div className="back-drop flex-row flex-row--align-h-center flex-row--align-v-center">
+                    <div className="loader"></div>
+                </div>
+            }
         </main>
     )
 }
 
-export default Home
+function mapStateToProps(state) {
+    const { memeImgReducer } = state
+    return { memeImgReducer }
+}
+
+export default connect(mapStateToProps)(Home)
