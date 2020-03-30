@@ -1,18 +1,19 @@
-import React from 'react';
-// import logo from './logo.svg';
-import Header from './components/header'
-import Footer from './components/footer'
-import Home from './app/home'
-import './App.scss';
+import React from 'react'
+
+import Header from './components/header/header'
+import Footer from './components/footer/footer'
+import Home from './app/home/home'
+import './App.scss'
+import './assets/styles/flex.scss'
 
 function App() {
   return (
     <div className="app-container">
       <Header />
-        <Home />
+      <Home />
       <Footer />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
