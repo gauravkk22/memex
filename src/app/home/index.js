@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import {BASE_SEARCH_URL_WITH_QUERY, NO_DATA_AVAILABLE, ERROR_MESSAGE} from '../../constants/constants'
+import {BASE_SEARCH_URL_WITH_QUERY, NO_DATA_AVAILABLE, ERROR_MESSAGE, START_GENERATING_MEMES, LOADING_IMAGE_BASE64} from '../../constants/constants'
 import MemeImage from "./../../components/memeImage"
 import { fetchMemeImgList, saveMemeDetails } from './actionCreator'
 import './home.scss'
@@ -24,9 +24,11 @@ function Home(props){
 
     function onHandleChange(e, callback){
         callback(e.target.value)
+        setMemeMainImg("")
     }
 
     function onHandleSearch(e) {
+        e.preventDefault()
         if(search !== ""){
             setMemeMainImg("")
             setIsMainImgLoading(true)
@@ -60,30 +62,30 @@ function Home(props){
     }
 
     return (
-        <main className="main-container">
-            <div className="flex-row">
+        <main className="main-container ">
+            <form className="flex-row" onSubmit={onHandleSearch}>
                 <input className="flex-col-xs-9 flex-col-sm-9 flex-col-md-9 flex-col-lg-9 meme-input-text" name="search" type="text" 
                 value={search} onChange={e => onHandleChange(e, setSearch)} placeholder="Search image" />
                 <div className="display-flex flex-col-lg-3 flex-col-md-3 flex-col-sm-3 flex-col-xs-3 padding-top-0 padding-bottom-0">
-                    <button className="meme-btn" onClick={onHandleSearch}>Search</button>
+                    <button className="meme-btn" type="submit" >Search</button>
                 </div>
-            </div>
-            <section className="flex-row">
+            </form>
+            <section className="flex-row left-side">
                 <div className="img-view flex-col-lg-9 flex-col-md-9 flex-col-sm-12 flex-col-xs-12 flex-row">
                     <div className="flex-col-xs-12 flex-row--align-h-center flex-row--align-v-center meme-main flex-row">
                         {
                         memeMainImg && memeMainImg !== "NO_DATA" &&
 
                             <MemeImage classProp="main-img" 
-                                imgSrcProp={!isMainImgLoading ? memeMainImg.url:"./loading.gif"} 
+                                imgSrcProp={!isMainImgLoading ? memeMainImg.url: "data:image/gif;base64,"+LOADING_IMAGE_BASE64} 
                                 onLoadProp={() => setIsMainImgLoading(false)} 
                                 memeTextPositionProp={memeTextPosition}
                                 memeTextProp={memeText}
                                 isImgLoading={isMainImgLoading} />
                         }
-                        {memeMainImg==="" &&
+                        {search==="" && memeMainImg==="" &&
                             <>
-                                <div className="no-data">{NO_DATA_AVAILABLE}</div>
+                                <h3 className="no-data">{START_GENERATING_MEMES}</h3>
                             </>
                         }
                         {memeMainImg === "NO_DATA" &&
@@ -126,7 +128,7 @@ function Home(props){
                     </div>
 
                     <div>
-                        <div className="">Position :</div>
+                        <div>Position :</div>
                         <label>
                             <input name="memeTextPosition" 
                             checked={memeTextPosition === "top"} 
