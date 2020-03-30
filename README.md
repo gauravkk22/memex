@@ -1,8 +1,8 @@
 # Memex
 
-**An application for creating meme using splashbase api**
+## An application for creating meme using splashbase api
 
-##To check the PWA aspect of the code go to
+### To check the PWA aspect of the code go to
 
 [https://somber-church.surge.sh/](https://somber-church.surge.sh/)
 
