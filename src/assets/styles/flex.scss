@@ -31,8 +31,8 @@ $device-lg: 1200px;
   flex-wrap: wrap;
   margin-bottom: 1em;
 }
-.flex-row--align-v-top{
-    align-items: flex-start;
+.flex-row--align-v-top {
+  align-items: flex-start;
 }
 .flex-row--align-v-center {
   align-items: center;
@@ -40,7 +40,7 @@ $device-lg: 1200px;
 
 .flex-row--align-v-bottom {
   align-items: flex-end;
-} 
+}
 
 .flex-row--align-h-center {
   justify-content: center;

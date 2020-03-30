@@ -1,17 +1,27 @@
 import React from 'react'
 
-function MemeImage(props){
-    return (
-        <>
-            <img className={props.classProp} 
-                src={props.imgSrcProp} 
-                alt="Loading" 
-                onLoad={props.onLoadProp}/>
-            <div className={ `${props.memeTextPositionProp ? `flex-row--align-v-${props.memeTextPositionProp} ` :``}meme-text`}>
-                {!props.isImgLoading ? props.memeTextProp : props.isImgLoading}
-            </div>
-        </>
-    )
+function MemeImage(props) {
+  const {
+    classProp,
+    imgSrcProp,
+    onLoadProp,
+    memeTextPositionProp,
+    memeTextProp,
+    isImgLoading
+  } = props
+
+  return (
+    <>
+      <img className={classProp} src={imgSrcProp} alt="Loading" onLoad={onLoadProp} />
+      <div
+        className={`${
+          memeTextPositionProp ? `flex-row--align-v-${memeTextPositionProp} ` : ``
+        }meme-text`}
+      >
+        {!isImgLoading ? memeTextProp : ''}
+      </div>
+    </>
+  )
 }
 
 export default MemeImage
