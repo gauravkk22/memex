@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import {BASE_SEARCH_URL_WITH_QUERY, NO_DATA_AVAILABLE, ERROR_MESSAGE, START_GENERATING_MEMES, LOADING_IMAGE_BASE64} from '../../constants/constants'
-import MemeImage from "./../../components/memeImage"
+import MemeImage from "../../components/memeImage"
 import { fetchMemeImgList, saveMemeDetails } from './actionCreator'
 import './home.scss'
 
