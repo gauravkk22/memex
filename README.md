@@ -1,26 +1,26 @@
 # Memex
 
-**An application for creating meme using splashbase api**
+## An application for creating meme using splashbase api
 
-##To check the PWA aspect of the code go to
+**To check the PWA aspect of the code go to**
 
 [https://somber-church.surge.sh/](https://somber-church.surge.sh/)
 
 **Note: There is a CORS error because of the api being http and the application being hosted in https**
 
-###Commands for various activities
+### Commands for various activities to be followed
 
-first and formost you need to run the following command
+First and formost you need to run the following command
 
 `npm install` at the root of the application
 
 Then the rest followa
 
-`npm run start` //to start the dev build
-`npm run build` //to build the application
-`npm run pretty-fix` // to prettify the code
-`npm run eslint-fix` // to rectify the lint errors and
-`npm run test` // to unit test the application according to the various testcases defined
+- `npm run start` //to start the dev build
+- `npm run build` //to build the application
+- `npm run pretty-fix` // to prettify the code
+- `npm run eslint-fix` // to rectify the lint errors and
+- `npm run test` // to unit test the application according to the various testcases defined
 
 # GETTING STARTED
 
