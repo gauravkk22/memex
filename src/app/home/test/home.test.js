@@ -1,4 +1,3 @@
-/* eslint no-use-before-define: 2 */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ConnectedHome, { Home } from '../home'
